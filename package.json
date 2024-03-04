@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/keelw/cse341-contacts/issues"
   },
-  "homepage": "https://github.com/keelw/cse341-contacts#readme"
+  "homepage": "https://github.com/keelw/cse341-contacts#readme",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
 }
