@@ -36,6 +36,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -100,6 +103,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Internal Server Error"
           }
         }
       },
