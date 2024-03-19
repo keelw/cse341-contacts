@@ -3,23 +3,32 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
   //#swagger.tags=['Contacts']
-  const result = await mongodb.getDatabase().db().collection('users').find();
-  result.toArray().then((contacts) => {
+  try {
+    const lists = await mongodb.getDatabase().db().collection('users').find().toArray();
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(contacts);
-  });
+    res.status(200).json(lists);
+  } catch (error) {
+    console.error('Error fetching all users:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 const getSingle = async (req, res) => {
   //#swagger.tags=['Contacts']
-  const userId = new ObjectId(req.params.id);
-  const result = await mongodb.getDatabase().db().collection('users').find({ _id: userId });
-  result.toArray().then((contacts) => {
+  try {
+    const userId = new ObjectId(req.params.id);
+    const result = await mongodb.getDatabase().db().collection('users').findOne({ _id: userId });
+    if (!result) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(contacts[0]);
-  });
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Error fetching single user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
-
 const create = async (req, res) => {
   //#swagger.tags=['Contacts']
   // Create a contact
@@ -66,7 +75,7 @@ const deleteSingle = async (req, res) => {
   if (response.deletedCount > 0) {
     res.status(204).send();
   } else {
-    res.status(500).json(response.error || 'Something went wrong when creating the user.');
+    res.status(500).json(response.error || 'Something went wrong when deleting the user.');
   }
 };
 
