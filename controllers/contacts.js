@@ -15,6 +15,12 @@ const getAll = async (req, res) => {
 
 const getSingle = async (req, res) => {
   //#swagger.tags=['Contacts']
+
+  // quick data validation for user ID
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json('Must use a valid contact id to find a contact.');
+  }
+
   try {
     const userId = new ObjectId(req.params.id);
     const result = await mongodb.getDatabase().db().collection('users').findOne({ _id: userId });
@@ -50,6 +56,12 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   //#swagger.tags=['Contacts']
+
+  // quick data validation for user ID
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json('Must use a valid contact id to find a contact.');
+  }
+
   const contactId = new ObjectId(req.params.id);
   // Create a contact
   const contact = {
@@ -70,6 +82,12 @@ const update = async (req, res) => {
 
 const deleteSingle = async (req, res) => {
   //#swagger.tags=['Contacts']
+
+  // quick data validation for user ID
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json('Must use a valid contact id to find a contact.');
+  }
+
   const contactId = new ObjectId(req.params.id);
   const response = await mongodb.getDatabase().db().collection('users').deleteOne({ _id: contactId }, true);
   if (response.deletedCount > 0) {
